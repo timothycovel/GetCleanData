@@ -1,6 +1,15 @@
 require("data.table")
 require("reshape2")
 
+# Download data set and unzip if it is not available in the current directory
+if (! file.exists("UCI HAR Dataset/activity_labels.txt")){
+  url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+  file <- "UCI.zip"
+  download.file(url, file, method = "curl")
+  
+  unzip(file)
+}
+
 # feature name preprocessing pipe(), must have 'egrep', 'awk', and 'sed' available in $PATH
 # This gives us nice clean names to use
 feature_names <- read.table(pipe("egrep 'std|mean' UCI\\ HAR\\ Dataset/features.txt|awk '{print $2}'|sed -e 's/\\(^.*\\)-mean()/Mean(\\1)/' -e 's/\\(^.*\\)-meanFreq()/Mean(\\1Freq)/' -e 's/\\(^.*\\)-std()/Std(\\1)/' -e 's/BodyBody/Body/'"))[,1]
@@ -51,15 +60,15 @@ testingcols <- cbind(as.data.table(subject_testdata), y_testdata, x_testdata)
 # clip the testing and the training columns into matching rows
 datarows <- rbind(trainingcols,testingcols)
 
-# use melt to group all the observations by subject and activity
+# use melt to group all the observations by subject and activity, all other fields will be treated as variables for the dcast
 goo <- melt(datarows, id=c("Subject_ID","Activity_ID","Activity_Name"))
 
 # dcast does the heavy lifting of getting the mean of the observations by each subject and activity
-tidy_goo <- dcast(goo, Subject_ID + Activity_Name ~ variable, mean)
+tidy_goo <- dcast(goo, Activity_Name + Subject_ID ~ variable, mean)
 
-write.table(tidy_goo, file="my_wide_tidydata.txt", sep="\t", row.names=FALSE)
+write.table(tidy_goo, file="my_tidydata.txt", sep="\t", row.names=FALSE)
 
-data <- read.table("my_wide_tidydata.txt")
+data <- read.table("my_tidydata.txt")
 View(data)
 
 
