@@ -11,6 +11,12 @@ The script run_analysis.R, performs the following:
 If you have the tidy data set that has been submitted, you can view it in Rstudio using the following command:
 * View("my_tidydata.txt")
 
-Additional details about the Data involved in run_analysis.R and the output data can be found in the codebook.md file.
+Assumptions:
+* I chose the feature names to process based on the terms 'std' or 'mean' being present in the given name. This may differ slightly from how others have selected their own features. For this script and the associated tidy data result, expect to see any features that would match given the expression: 
+
+egrep 'std|mean' UCI\\ HAR\\ Dataset/features.txt
+
+Notes:
+* Additional details about the Data involved in run_analysis.R and the output data can be found in the codebook.md file.
 
 
