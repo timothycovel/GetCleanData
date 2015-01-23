@@ -2,15 +2,15 @@
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 
 ###Files Used###
-* UCI HAR Dataset
-** UCI HAR Dataset/activity_labels.txt
-** UCI HAR Dataset/features.txt
-** UCI HAR Dataset/test/x_test.txt
-** UCI HAR Dataset/test/y_test.txt
-** UCI HAR Dataset/test/subject_test.txt
-** UCI HAR Dataset/train/x_train.txt
-** UCI HAR Dataset/train/y_train.txt
-** UCI HAR Dataset/train/subject_train.txt
+* UCI HAR Dataset/
+* ./activity_labels.txt
+* ./features.txt
+* ./test/x_test.txt
+* ./test/y_test.txt
+* ./test/subject_test.txt
+* ./train/x_train.txt
+* ./train/y_train.txt
+* ./train/subject_train.txt
 
 ##Program Values##
 * features_names - feature names taken from UCI HAR Dataset/features.txt
@@ -32,7 +32,7 @@ https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Datas
 
 ##Program Output##
 * Output Contains observations for 30 subjects participating in 6 activities, grouped first by Activity Name, then by Subject ID
-* Each additional collumn contains the observed metric displayed as either Mean() or Std() and tagged as x, y, or z as appropriate. 
+* Each additional column contains the observed metric displayed as either Mean() or Std() and tagged as x, y, or z as appropriate. 
 
 ###Activity Names###
 * LAYING
