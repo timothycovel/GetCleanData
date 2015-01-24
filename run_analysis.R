@@ -50,7 +50,7 @@ tidy_goo <- dcast(goo, Activity_Name + Subject_ID ~ variable, mean)
 
 write.table(tidy_goo, file="my_tidydata.txt", sep="\t", row.names=FALSE)
 
-data <- read.table("my_tidydata.txt")
+data <- read.table("my_tidydata.txt",header = TRUE)
 View(data)
 
 
