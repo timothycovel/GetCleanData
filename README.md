@@ -16,9 +16,11 @@ If you have the tidy data set that has been submitted, you can view it in Rstudi
 ## Assumptions:
 * I chose the feature names to process based on the terms 'std' or 'mean' being present in the given name. This may differ slightly from how others have selected their own features. For this script and the associated tidy data result, expect to see any features that would match given the expression: 
 
-* egrep 'std|mean' UCI\\ HAR\\ Dataset/features.txt
+egrep 'std|mean' UCI\\ HAR\\ Dataset/features.txt
+
+* The final data set should consist of 80 rows, displaying data for 6 activities and 30 subjects for each of the observed features. 
 
 ## Notes:
-* Additional details about the Data involved in run_analysis.R and the output data can be found in the codebook.md file.
+* Additional details about the Data source, script values, caluclated summaries, and output from run_analysis.R can be found in the *codebook.md* file.
 
 
