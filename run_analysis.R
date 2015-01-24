@@ -2,7 +2,7 @@ library("data.table")
 library("reshape2")
 
 # Download data set and unzip if it is not available in the current directory
-if (! file.exists("")){
+if (! file.exists("UCI HAR Dataset/features.txt")){
   url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
   file <- "UCI.zip"
   download.file(url, file, method = "curl")
