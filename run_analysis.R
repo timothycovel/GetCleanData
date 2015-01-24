@@ -1,8 +1,8 @@
-require("data.table")
-require("reshape2")
+library("data.table")
+library("reshape2")
 
 # Download data set and unzip if it is not available in the current directory
-if (! file.exists("UCI HAR Dataset/activity_labels.txt")){
+if (! file.exists("")){
   url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
   file <- "UCI.zip"
   download.file(url, file, method = "curl")
@@ -10,37 +10,25 @@ if (! file.exists("UCI HAR Dataset/activity_labels.txt")){
   unzip(file)
 }
 
-# feature name preprocessing pipe(), must have 'egrep', 'awk', and 'sed' available in $PATH
-# This gives us nice clean names to use
-feature_names <- read.table(pipe("egrep 'std|mean' UCI\\ HAR\\ Dataset/features.txt|awk '{print $2}'|sed -e 's/\\(^.*\\)-mean()/Mean(\\1)/' -e 's/\\(^.*\\)-meanFreq()/Mean(\\1Freq)/' -e 's/\\(^.*\\)-std()/Std(\\1)/' -e 's/BodyBody/Body/'"))[,1]
-
-# grab activity_names data
-activity_names <- read.table("UCI HAR Dataset/activity_labels.txt")[,2]
-
-# grab x_test data and subset it by the feature names
+# grab test data
 x_testdata <- read.table("UCI HAR Dataset/test/X_test.txt")
-x_testdata = x_testdata[,feature_names]
-
-# grab y_test data
 y_testdata <- read.table("UCI HAR Dataset/test/y_test.txt")
-
-# grab subject_test data
 subject_testdata <- read.table("UCI HAR Dataset/test/subject_test.txt")
 
-# grab x_train data and subset it by the feature names
+# grab train data
 x_traindata <- read.table("UCI HAR Dataset/train/X_train.txt")
-x_traindata = x_traindata[,feature_names]
-
-# grab y_train data
 y_traindata <- read.table("UCI HAR Dataset/train/y_train.txt")
-
-# grab subject_train data
 subject_traindata <- read.table("UCI HAR Dataset/train/subject_train.txt")
 
-# set up the 'y' test and train data using the activity names provided
+# grab feature names and subset the x_data
+feature_names <- read.table(pipe("egrep 'std|mean' UCI\\ HAR\\ Dataset/features.txt|awk '{print $2}'|sed -e 's/\\(^.*\\)-mean()/Mean(\\1)/' -e 's/\\(^.*\\)-meanFreq()/Mean(\\1Freq)/' -e 's/\\(^.*\\)-std()/Std(\\1)/' -e 's/BodyBody/Body/'"))[,1]
+x_testdata = x_testdata[,feature_names]
+x_traindata = x_traindata[,feature_names]
+
+# grab activity_names and add to the y_data
+activity_names <- read.table("UCI HAR Dataset/activity_labels.txt")[,2]
 y_testdata[,2] = activity_names[y_testdata[,1]]
 y_traindata[,2] = activity_names[y_traindata[,1]]
-
 
 # NAME ALL THE THINGS!
 # x data is labled from feature_names, y data is labled with the activity ID and Name, subjects data gets the subject ID
@@ -51,14 +39,8 @@ names(y_traindata) = c("Activity_ID", "Activity_Name")
 names(subject_testdata) = "Subject_ID"
 names(subject_traindata) = "Subject_ID"
 
-# bind together all the training data
-trainingcols <- cbind(as.data.table(subject_traindata), y_traindata, x_traindata)
-
-# bind together all the testing data
-testingcols <- cbind(as.data.table(subject_testdata), y_testdata, x_testdata)
-
-# clip the testing and the training columns into matching rows
-datarows <- rbind(trainingcols,testingcols)
+# bind together all the training and testing data data
+datarows <- rbind(cbind(as.data.table(subject_traindata), y_traindata, x_traindata),cbind(as.data.table(subject_testdata), y_testdata, x_testdata))
 
 # use melt to group all the observations by subject and activity, all other fields will be treated as variables for the dcast
 goo <- melt(datarows, id=c("Subject_ID","Activity_ID","Activity_Name"))
